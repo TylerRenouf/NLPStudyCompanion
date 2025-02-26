@@ -1,50 +1,59 @@
-import { useEffect, useState } from 'react';
 import './App.css';
+import '@mantine/core/styles.css';
+
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { MantineProvider, AppShell, Burger, Group } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
+
+
+import Cards from './pages/Cards/Cards';
+import Decks from './pages/Decks/Decks';
+import { NavbarContentProvider } from './utils/NavbarContentContext';
+import NavbarContent from './Components/NavbarContent';
+
 
 function App() {
-    const [forecasts, setForecasts] = useState();
-
-    useEffect(() => {
-        populateWeatherData();
-    }, []);
-
-    const contents = forecasts === undefined
-        ? <p><em>Loading... Please refresh once the ASP.NET backend has started. See <a href="https://aka.ms/jspsintegrationreact">https://aka.ms/jspsintegrationreact</a> for more details.</em></p>
-        : <table className="table table-striped" aria-labelledby="tableLabel">
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Temp. (C)</th>
-                    <th>Temp. (F)</th>
-                    <th>Summary</th>
-                </tr>
-            </thead>
-            <tbody>
-                {forecasts.map(forecast =>
-                    <tr key={forecast.date}>
-                        <td>{forecast.date}</td>
-                        <td>{forecast.temperatureC}</td>
-                        <td>{forecast.temperatureF}</td>
-                        <td>{forecast.summary}</td>
-                    </tr>
-                )}
-            </tbody>
-        </table>;
+    const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
+    const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
 
     return (
-        <div>
-            <h1 id="tableLabel">Weather forecast</h1>
-            <p>This is a cool paragraph</p>
-            <p>This component demonstrates fetching data from the server.</p>
-            {contents}
-        </div>
+        <MantineProvider>
+            <NavbarContentProvider>
+                <AppShell
+                    header={{ height: 70 }}
+                    navbar={{
+                        width: { base: 200, md: 250, lg: 300 },
+                        breakpoint: 'sm',
+                        collapsed: { mobile: !mobileOpened, desktop: !desktopOpened },
+                    }}
+                    padding="md"
+                >
+ 
+                    <AppShell.Header>
+                        <Group h="100%" px="md">
+                            <Burger opened={mobileOpened} onClick={toggleMobile} hiddenFrom="sm" size="sm" />
+                            <Burger opened={desktopOpened} onClick={toggleDesktop} visibleFrom="sm" size="sm" />
+                        </Group>
+                    </AppShell.Header>
+
+                    <AppShell.Navbar>
+                        <NavbarContent />
+                    </AppShell.Navbar>
+
+                    <AppShell.Main>
+                        <Router>
+                            <Routes>
+                                <Route path="/" element={<Decks />} />
+                                <Route path="/deck/:deckId" element={<Cards />} />
+                            </Routes>
+                        </Router>
+                    </AppShell.Main>
+
+
+                </AppShell>
+            </NavbarContentProvider>
+        </MantineProvider>
     );
-    
-    async function populateWeatherData() {
-        const response = await fetch('weatherforecast');
-        const data = await response.json();
-        setForecasts(data);
-    }
 }
 
 export default App;

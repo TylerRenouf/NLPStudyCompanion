@@ -22,12 +22,14 @@ a:hover {
   color: #535bf2;
 }
 
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
 }
 
 h1 {
@@ -35,17 +37,6 @@ h1 {
   line-height: 1.1;
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
 button:hover {
   border-color: #646cff;
 }
@@ -63,6 +54,54 @@ button:focus-visible {
     color: #747bff;
   }
   button {
-    background-color: #f9f9f9;
+    background-color: royalblue;
   }
+}
+
+
+.card {
+
+    height: 25vh;
+    cursor: pointer;
+}
+
+.card-inner {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d; /* Ensure child elements are positioned in 3D space */
+    transition: transform 0.6s; /* Animate the flip effect */
+}
+
+.card.flipped .card-inner {
+    transform: rotateY(180deg); /* This rotates the card when flipped */
+}
+
+.card-front, .card-back {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    backface-visibility: hidden; /* Hide the back side when it's flipped */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    text-align: center;
+    font-size: 1.2em;
+    background-color: #fff; /* Optional: Set background for the front and back */
+    border: 1px solid #ddd; /* Optional: Add a border */
+}
+
+.card-back {
+    transform: rotateY(180deg); /* Initially rotate the back side so it's hidden */
+    background-color: #f4f4f4; /* Optional: Set background color for the back */
+}
+
+.selectable-row {
+    user-select: none;
+    cursor: pointer
+}
+
+.query-result {
+    text-align:left;
 }
