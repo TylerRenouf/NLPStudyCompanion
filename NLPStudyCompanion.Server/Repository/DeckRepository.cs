@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.DataProtection.Repositories;
 using Microsoft.EntityFrameworkCore;
 using NLPStudyCompanion.Server.Data;
 using NLPStudyCompanion.Server.DTOs;
@@ -44,6 +45,15 @@ namespace NLPStudyCompanion.Server.Repositories
             if (deck == null) return false;
 
             _context.Decks.Remove(deck);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+        public async Task<bool> DeleteDecksAsync(List<int> ids)
+        {
+            var decks = await _context.Decks.Where(d=> ids.Contains(d.Id)).ToListAsync();
+            if (!decks.Any()) return false;
+
+            _context.Decks.RemoveRange(decks);
             await _context.SaveChangesAsync();
             return true;
         }

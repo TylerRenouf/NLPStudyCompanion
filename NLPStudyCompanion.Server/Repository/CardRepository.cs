@@ -37,6 +37,21 @@ namespace NLPStudyCompanion.Server.Repositories
             return true;
         }
 
+        // Batch deletion of cards
+        public async Task<bool> DeleteCardsAsync(IEnumerable<int> ids)
+        {
+            var cardsToDelete = await _context.Cards.Where(c => ids.Contains(c.Id)).ToListAsync();
+
+  
+            if (!cardsToDelete.Any()) {
+                return false;
+            }
+
+            _context.Cards.RemoveRange(cardsToDelete);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
         public async Task<bool> ModifyCardAsync(int id, Deck? deck, string? concept = null, string? content = null)
         {
             var card = await _context.Cards.Include(c => c.Deck).FirstOrDefaultAsync(c => c.Id == id);
@@ -61,9 +76,5 @@ namespace NLPStudyCompanion.Server.Repositories
             await _context.SaveChangesAsync();
             return true;
         }
-
-
-
-
     }
 }

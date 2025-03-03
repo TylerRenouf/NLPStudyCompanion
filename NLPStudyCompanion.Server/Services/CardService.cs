@@ -89,6 +89,19 @@ namespace NLPStudyCompanion.Server.Services
             return ServiceResultFactory.Success(true,statusCode:204);
         }
 
+        public async Task<ServiceResult<bool>> DeleteCardsAsync(IEnumerable<int> ids)
+        {
+            var deleteSuccess = await _cardRepository.DeleteCardsAsync(ids);
+  
+            if (!deleteSuccess)
+            {
+                return ServiceResultFactory.Failure<bool>("Some or all cards were not found.", 404);
+            }
+
+            return ServiceResultFactory.Success(true, statusCode: 204);
+        }
+
+
         public async Task<ServiceResult<bool>> ModifyCardAsync(int id, UpdateCardDto updateCardDto)
         {
 

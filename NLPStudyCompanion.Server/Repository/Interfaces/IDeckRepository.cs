@@ -9,6 +9,7 @@ namespace NLPStudyCompanion.Server.Repository.Interfaces
         Task<Deck?> GetDeckByIdAsync(int id);
         Task<Deck> AddDeckAsync(CreateDeckDto deck);
         Task<bool> DeleteDeckAsync(int id);
+        Task<bool> DeleteDecksAsync(List<int> id);
         Task<bool> ModfiyDeckAsync(int id, UpdateDeckDto deckDto);
     }
 }

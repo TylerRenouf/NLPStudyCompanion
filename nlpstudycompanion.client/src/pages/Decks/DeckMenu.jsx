@@ -1,11 +1,39 @@
 import PropTypes from 'prop-types';
 import SelectableTable from '../../Components/SelectableTable';
-import { useState } from 'react'
 
-DeckMenu.propTypes = { cards: PropTypes.array, setCurrentCard: PropTypes.func }
+import { useSelectableRows } from '../../utils/hooks/useSelectableRows';
+import { useCrudOperations } from '../../utils/hooks/useCrudOperations';
+import { useDeleteCards } from '../../services/cardsService';
 
-export default function DeckMenu({ cards, setCurrentCard }) {
-    const [selectedRows, setSelectedRows] = useState([])
+
+
+DeckMenu.propTypes = { cards: PropTypes.array, deckId: PropTypes.number.isRequired, setCurrentCard: PropTypes.func }
+
+export default function DeckMenu({ cards, deckId, setCurrentCard }) {
+    const { selectedRows, toggleRowSelection, resetSelection } = useSelectableRows();
+    const { mutateAsync: deleteCardsMutation } = useDeleteCards();
+
+    const { create, modify, remove } = useCrudOperations({
+        deleteMutation: deleteCardsMutation,
+    });
+
+    
+
+    const handleRowClick = (card, cardIdx) => {
+        setCurrentCard(cardIdx)
+    }
+
+    const handleRowSelect = (e, row, rowKey, isSelected) => {
+        toggleRowSelection(rowKey, isSelected);
+    };
+
+    const handleDelete = async () => {
+        if (selectedRows.size) {
+            await remove({ deckId, cardIds: [...selectedRows] });
+            resetSelection();
+        }
+        
+    };
 
 
     const tableData = {
@@ -14,22 +42,13 @@ export default function DeckMenu({ cards, setCurrentCard }) {
         body: cards.map((card) => [card.id, card.concept]),
     }
 
-    const handleRowClick = (card, cardIdx) => {
-        setCurrentCard(cardIdx) // Set current index based on row index in table (is 1-indexed)
-    }
-
-    const handleRowSelect = (e, row, rowKey, isSelected) => {
-        setSelectedRows((prevSelectedRows) => {
-            if (isSelected) {
-                return [...prevSelectedRows, rowKey];
-            } else {
-                return prevSelectedRows.filter((key) => key !== rowKey);
-            }
-        });
-    }
-
-
     return (
-        <SelectableTable tableData={tableData} onClick={handleRowClick} onSelect={handleRowSelect} selectedRows={selectedRows} />
+        <SelectableTable
+            tableData={tableData}
+            onClick={handleRowClick}
+            onSelect={handleRowSelect}
+            onDelete={handleDelete}
+            selectedRows={[...selectedRows]}
+        />
     );
 }

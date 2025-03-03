@@ -112,6 +112,13 @@ namespace NLPStudyCompanion.Server.Controllers
             return ServiceResultTranslator.Translate(result);
         }
 
+        [HttpDelete("")]
+        public async Task<IActionResult> DeleteDecks(List<int> deckIds)
+        {
+            ServiceResult<bool> result = await _deckService.DeleteDecksAsync(deckIds);
+            return ServiceResultTranslator.Translate(result);
+        }
+
         /// <summary>
         /// Delete a card by ID
         /// </summary>
@@ -121,6 +128,17 @@ namespace NLPStudyCompanion.Server.Controllers
         public async Task<IActionResult> DeleteCard(int cardId)
         {
             ServiceResult<bool> result = await _cardService.DeleteCardAsync(cardId);
+            return ServiceResultTranslator.Translate(result);
+        }
+
+        [HttpDelete("{deckId}/cards")]
+        public async Task<IActionResult> DeleteCards([FromBody] List<int> cardIds)
+        {
+            if (cardIds == null || !cardIds.Any())
+            {
+                return BadRequest("No card IDs provided.");
+            }
+            ServiceResult<bool> result = await _cardService.DeleteCardsAsync(cardIds);
             return ServiceResultTranslator.Translate(result);
         }
 

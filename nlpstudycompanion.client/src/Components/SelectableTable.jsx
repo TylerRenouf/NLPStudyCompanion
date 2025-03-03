@@ -3,8 +3,8 @@ import { Table, Pagination, Stack, Checkbox, Button, Group } from '@mantine/core
 import { useState } from 'react';
 import PropTypes from 'prop-types'
 
-SelectableTable.propTypes = { tableData: PropTypes.object, onClick: PropTypes.func,onSelect: PropTypes.func, selectedRows: PropTypes.array, pageSize: PropTypes.number }
-export default function SelectableTable({ tableData, onClick, onSelect, selectedRows, pageSize=10 }) {
+SelectableTable.propTypes = { tableData: PropTypes.object, onClick: PropTypes.func, onSelect: PropTypes.func, onDelete: PropTypes.func, selectedRows: PropTypes.array, pageSize: PropTypes.number }
+export default function SelectableTable({ tableData, onClick, onSelect,onDelete, selectedRows, pageSize=10 }) {
     const [page, setPage] = useState(1);
 
 
@@ -96,14 +96,14 @@ export default function SelectableTable({ tableData, onClick, onSelect, selected
                     {rows}
                 </Table.Tbody>
             </Table>
-            <Group justify='flex-end'>
+            <Group justify='flex-start'>
             
                 <Pagination
                     page={page}
                     onChange={setPage}
                     total={Math.ceil(tableData.body.length / pageSize)}
-                    />
-                    <Button color="red">Delete Selected</Button>
+                />
+                <Button color="red" onClick={onDelete} disabled={!selectedRows.length}>Delete Selected</Button>
             </Group>
         </Stack>
     );

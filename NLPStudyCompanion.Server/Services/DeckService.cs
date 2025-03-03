@@ -49,7 +49,7 @@ namespace NLPStudyCompanion.Server.Services
 
             return ServiceResultFactory.Success<DeckDto>(retrievedDeck);
         }
-
+        
         public async Task<ServiceResult<DeckDto>> AddDeckAsync(CreateDeckDto deckDto)
         {
 
@@ -84,7 +84,18 @@ namespace NLPStudyCompanion.Server.Services
             return ServiceResultFactory.Success<bool>(true, statusCode:204);
 
         }
+        public async Task<ServiceResult<bool>> DeleteDecksAsync(List<int> ids)
+        {
+            bool deleteSuccess = await _repository.DeleteDecksAsync(ids);
 
+            if (!deleteSuccess)
+            {
+                return ServiceResultFactory.Failure<bool>($"One or more decks could not be found", 404);
+            }
+
+            return ServiceResultFactory.Success<bool>(true, statusCode: 204);
+
+        }
         public async Task<ServiceResult<bool>> ModifyDeckAsync(int id, UpdateDeckDto deckDto)
         {
             if (deckDto.name == null || string.IsNullOrWhiteSpace(deckDto.name))
