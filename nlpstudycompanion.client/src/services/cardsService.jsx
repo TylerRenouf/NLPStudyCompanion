@@ -5,6 +5,7 @@ async function fetchCardsByDeck(deckId) {
     const response = await fetch(`https://localhost:7030/api/Deck/${deckId}/cards`, {
             method: 'GET'
     });
+
     if (!response.ok) throw new Error('Error fetching cards')
     return await response.json()
 }

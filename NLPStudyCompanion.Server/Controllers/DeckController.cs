@@ -92,7 +92,7 @@ namespace NLPStudyCompanion.Server.Controllers
 
             if (result.StatusCode == 201)
             {
-                string? location = Url.Link("GetDeckById", new { deckId = result.Data.id });
+                string? location = Url.Link("GetDeckById", new { deckId = result.Data?.id });
                 return ServiceResultTranslator.Translate(result, location);
             }
 

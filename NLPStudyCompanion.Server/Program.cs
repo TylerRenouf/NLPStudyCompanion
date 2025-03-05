@@ -1,11 +1,14 @@
 using NLPStudyCompanion.Server.Data;
 using NLPStudyCompanion.Server.Middleware;
 using NLPStudyCompanion.Server.Services;
+using NLPStudyCompanion.Server.NlpAPI.Interfaces;
 using NLPStudyCompanion.Server.Services.Interfaces;
 using NLPStudyCompanion.Server.Repositories;
 using NLPStudyCompanion.Server.Repository.Interfaces;
 using Microsoft.OpenApi.Models;
+
 using System.Reflection;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +29,10 @@ builder.Services.AddSwaggerGen(options =>
     var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
     options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
 });
+
+string model = "gpt-4o-mini";
+builder.Services.AddSingleton<IOpenAiService>(new OpenAiService(model));
+
 
 
 builder.Services.AddScoped<IDeckService, DeckService>();
