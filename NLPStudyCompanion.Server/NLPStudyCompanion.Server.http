@@ -1,6 +1,0 @@
-@NLPStudyCompanion.Server_HostAddress = http://localhost:5238
-
-GET {{NLPStudyCompanion.Server_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
