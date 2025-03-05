@@ -1,5 +1,6 @@
 import './App.css';
 import '@mantine/core/styles.css';
+import 'regenerator-runtime/runtime';
 
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { MantineProvider, AppShell, Burger, Group } from '@mantine/core';

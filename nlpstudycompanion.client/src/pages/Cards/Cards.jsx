@@ -20,6 +20,7 @@ function Cards() {
     const { data: cards, isLoading, isError } = useCardsByDeck(deckIdAsNumber);
 
     const [currentCard, setCurrentCard] = useState(0)
+    const [queryContent, setQueryContent] = useState("")
 
 
 
@@ -33,7 +34,7 @@ function Cards() {
 
 
 
-    let result = null;
+    let result = null ; //will be result of the API call the LLM
 
 
     let placeholder = "Feedback will appear here"
@@ -48,7 +49,7 @@ function Cards() {
             <Grid.Col span={{ base: 12, md: 8, lg: 8 }} >
                 <Stack>
                     <CardList cards={cards} currentCard={currentCard} setCurrentCard={setCurrentCard} deckId={deckIdAsNumber} />
-                    <AnswerBox label='Your Answer'/>
+                    <AnswerBox label='Your Answer' queryContent={queryContent} setQueryContent={setQueryContent} />
                 </Stack>
             </Grid.Col>
             <Grid.Col span={{ base: 12, md: 4, lg: 4 }}>
