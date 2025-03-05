@@ -1,0 +1,107 @@
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+button:hover {
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: royalblue;
+  }
+}
+
+
+.card {
+
+    height: 25vh;
+    cursor: pointer;
+}
+
+.card-inner {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d; /* Ensure child elements are positioned in 3D space */
+    transition: transform 0.6s; /* Animate the flip effect */
+}
+
+.card.flipped .card-inner {
+    transform: rotateY(180deg); /* This rotates the card when flipped */
+}
+
+.card-front, .card-back {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    backface-visibility: hidden; /* Hide the back side when it's flipped */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    text-align: center;
+    font-size: 1.2em;
+    background-color: #fff; /* Optional: Set background for the front and back */
+    border: 1px solid #ddd; /* Optional: Add a border */
+}
+
+.card-back {
+    transform: rotateY(180deg); /* Initially rotate the back side so it's hidden */
+    background-color: #f4f4f4; /* Optional: Set background color for the back */
+}
+
+.selectable-row {
+    user-select: none;
+    cursor: pointer
+}
+
+.query-result {
+    text-align:left;
+}
